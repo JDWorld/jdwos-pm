@@ -1,0 +1,37 @@
+#!/bin/bash
+# /usr/bin/jdw-remove - Il disinstallatore universale e modulare di JDWorld OS
+PACCHETTO=$1
+
+# Controllo privilegi di Root obbligatori
+if [ "$EUID" -ne 0 ]; then
+    echo -e "\e[1;31mErrore:\e[0m Questo comando deve essere eseguito con sudo."
+    exit 1
+fi
+
+if [ -z "$PACCHETTO" ]; then
+    echo -e "\e[1;31mErrore:\e[0m Specificare il nome del pacchetto da rimuovere."
+    echo "Uso: sudo jdw-remove [nome-pacchetto]"
+    exit 1
+fi
+
+UNINSTALL_SCRIPT="/usr/share/jdwos-pkg/uninstall.d/${PACCHETTO}-remove.sh"
+
+echo -e "\e[1;34m[JDWorld OS]\e[0m Richiesta di rimozione per: \e[1;33m$PACCHETTO\e[0m"
+
+# Controlla se esiste lo script di rimozione specifico per quel pacchetto
+if [ -f "$UNINSTALL_SCRIPT" ]; then
+    echo "==> Avvio dello script di rimozione specifico..."
+    # Esegue lo script passando SUDO_USER per permettergli di pulire la Home corretta
+    export SUDO_USER=$SUDO_USER
+    bash "$UNINSTALL_SCRIPT"
+
+    # Rimuove lo script di disinstallazione stesso dal sistema per non lasciare tracce
+    rm -f "$UNINSTALL_SCRIPT"
+    echo -e "\e[1;32m[OK]\e[0m Rimozione di $PACCHETTO completata con successo!"
+else
+    echo -e "\e[1;31m[ERRORE]\e[0m Nessuno script di rimozione trovato per '$PACCHETTO'."
+    echo "Il pacchetto potrebbe non essere installato o non essere un pacchetto nativo .jdw."
+    exit 1
+fi
+# Rimuove il pacchetto dal database di jdw-list
+rm -f "/usr/share/jdwos-pkg/installed/nome-del-pacchetto"

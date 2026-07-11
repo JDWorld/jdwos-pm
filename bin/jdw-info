@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# jdw-info: Visualizzatore schede tecniche atomico
+
+DB_LOCAL="/usr/share/jdwos-pkg/installed"
+GITHUB_USER="JDWorld"
+GITHUB_REPO="IL_TUO_REPO_PACCHETTI"
+GITHUB_BRANCH="main"
+
+PKG_RAW="$1"
+PKG_NAME=$(basename "$PKG_RAW" .jdw)
+
+if [ -z "$PKG_NAME" ]; then
+    echo "Errore: Specifica il nome di un pacchetto (es: jdwos-ff-stm)"
+    exit 1
+fi
+
+# FUNZIONE PER STAMPARE IN STILE TABELLA ARCH WEB
+stampa_scheda() {
+    local sorgente="$1"
+    echo "  =================================================="
+    echo "     SCHEDA TECNICA JDW ($sorgente) - $PKG_NAME"
+    echo "  =================================================="
+    while IFS='=' read -r chiave valore; do
+        # Salta righe vuote o commenti
+        [[ -z "$chiave" || "$chiave" =~ ^# ]] && continue
+        # Formatta l'output in stile tabella pulita
+        printf "    %-15s : %s\n" "$chiave" "$valore"
+    done < "$1"
+    echo "  =================================================="
+}
+
+# 1. CONTROLLO LOCALE (Istantaneo)
+if [ -f "$DB_LOCAL/$PKG_NAME" ]; then
+    echo "[JDWorld OS] Rilevato pacchetto installato localmente."
+    stampa_scheda "$DB_LOCAL/$PKG_NAME" "LOCALE"
+    exit 0
+fi
+
+# 2. CONTROLLO CLOUD (Scarica solo il file .info leggero)
+echo "[JDWorld OS] Pacchetto non installato. Controllo sul Cloud..."
+
+# Nota: Assicurati che il percorso punti a dove il tuo jdw-build pusha il file .info
+URL_CLOUD="https://githubusercontent.com"
+
+if curl --output /dev/null --silent --head --fail "$URL_CLOUD"; then
+    TMP_INFO="/tmp/$PKG_NAME.info"
+    curl -s "$URL_CLOUD" > "$TMP_INFO"
+    stampa_scheda "$TMP_INFO" "CLOUD"
+    rm -f "$TMP_INFO"
+else
+    echo "Errore: Pacchetto '$PKG_NAME' non trovato né in locale né sul Cloud."
+    exit 1
+fi

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# jdw-list: Elenca i pacchetti attivi mostrando Nome, Data Build e Descrizione
+
+DB_LOCAL="/usr/share/jdwos-pkg/installed"
+
+if [ ! -d "$DB_LOCAL" ] || [ -z "$(ls -A "$DB_LOCAL")" ]; then
+    echo "[JDWorld OS] Nessun pacchetto jdw installato sul sistema."
+    exit 0
+fi
+
+echo "=========================================================================================="
+printf " %-20s | %-12s | %s\n" "NOME PACCHETTO " "DATA BUILD" "DESCRIZIONE"
+echo "=========================================================================================="
+
+for file in "$DB_LOCAL"/*; do
+    # Salta se non è un file valido
+    [ -f "$file" ] || continue
+
+    # Inizializza le variabili per evitare residui dal ciclo precedente
+    p_name=""
+    p_date=""
+    p_desc=""
+
+    # Legge il file riga per riga ed estrae i metadati strutturati
+    while IFS='=' read -r chiave valore; do
+        case "$chiave" in
+            pkgname)    p_name=" $valore" ;;
+            build_date) p_date=" $valore" ;;
+            description)p_desc=" $valore" ;;
+        esac
+    done < "$file"
+
+    # Se il file non aveva le chiavi standard, usa il nome del file come fallback
+    [ -z "$p_name" ] && p_name=$(basename "$file")
+    [ -z "$p_date" ] && p_date="N/D"
+    [ -z "$p_desc" ] && p_desc="Nessuna descrizione presente."
+
+    # Stampa la riga formattata
+    printf "%-20s | %-12s | %s\n" "$p_name" "$p_date" "$p_desc"
+done
+
+echo "=========================================================================================="

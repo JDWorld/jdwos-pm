@@ -1,0 +1,3 @@
+[🔥 JDWorld OS > 🛠️ Packages Manager (.JDW)]
+Elenco Pacchetti .JDW, kitty sh -c 'jdw-list; echo ""; read -p "Premi Invio per chiudere..."', system-software-update
+Informazioni Pacchetto, kitty sh -c 'read -p "Trascina o scrivi il percorso del file .jdw: " FILE && jdw-info $FILE && read -p "Premi Invio per chiudere..."', dialog-information
