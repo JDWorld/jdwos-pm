@@ -23,6 +23,14 @@ if [ -f "$SRC_DIR/comandi/jdwos-pm-stm.txt" ]; then
     echo "==> Sottomenù Gestione Pacchetti inserito nel menù PyQt6."
 fi
 
+# ===>. Kitty Custom Profile
+if [ -f "$SRC_DIR/kitty/jdwos-pm.conf" ]; then
+    sudo mkdir -p /usr/share/jdwos-cfg
+    sudo cp "$SRC_DIR/kitty/jdwos-pm.conf" /usr/share/jdwos-cfg
+    sudo chmod 644 /usr/share/jdwos-cfg/jdwos-pm.conf
+#    echo "==> Sottomenù inserito nel menù PyQt6."
+fi
+
 # 4. Registrazione di sicurezza del PM stesso nel database locale
 if [ -f "$SRC_DIR/jdw-package.info" ]; then
     sudo cp "$SRC_DIR/jdw-package.info" /usr/share/jdwos-pkg/installed/jdwos-pm

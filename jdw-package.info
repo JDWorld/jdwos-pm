@@ -1,5 +1,5 @@
 pkgname=jdwos-pm
-version=1.0.3
+version=1.0.4
 description=JDWorld OS Packages Manager
 dependencies=nessuna
 architecture=x86_64
