@@ -21,10 +21,11 @@ jdwos-pm/
 
 Per agganciare `jdwos-pm` al tuo terminale locale ed eliminare automaticamente le tracce di compilazione, esegui i seguenti comandi nel terminale di bordo:
 
-{{< terminal >}}git clone https://github.com/JDWorld/jdwos-pm
+```
+git clone https://github.com/JDWorld/jdwos-pm
 cd jdwos-pm && chmod +x setup.sh
 sudo ./setup.sh # [auto-clean]
-{{< /terminal >}}
+```
 
 _Nota: Lo script `setup.sh` installerà i binari core e provvederà a piallare chirurgicamente la cartella temporanea scaricata da Git, lasciando il sistema operativo totalmente pulito da scorie residue._
 
