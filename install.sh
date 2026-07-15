@@ -3,7 +3,7 @@
 SRC_DIR=$1
 
 echo "📦 Installazione del JDWorld OS Package Manager Universale..."
-# sudo pacman -S --needed --noconfirm kitty ffmpeg kitty kdialog
+ sudo pacman -S --needed --noconfirm kitty kdialog
 
 # 1. Crea le cartelle di archivio centralizzate per il database dei pacchetti
 sudo mkdir -p /usr/share/jdwos-pkg/installed
@@ -28,7 +28,7 @@ if [ -f "$SRC_DIR/kitty/jdwos-pm.conf" ]; then
     sudo mkdir -p /usr/share/jdwos-cfg
     sudo cp "$SRC_DIR/kitty/jdwos-pm.conf" /usr/share/jdwos-cfg
     sudo chmod 644 /usr/share/jdwos-cfg/jdwos-pm.conf
-#    echo "==> Sottomenù inserito nel menù PyQt6."
+    echo "==>  Applicata Configurazione Kitty per Packages Manager."
 fi
 
 # 4. Registrazione di sicurezza del PM stesso nel database locale

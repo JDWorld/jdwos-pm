@@ -3,7 +3,7 @@
 
 DB_LOCAL="/usr/share/jdwos-pkg/installed"
 GITHUB_USER="JDWorld"
-GITHUB_REPO="IL_TUO_REPO_PACCHETTI"
+GITHUB_REPO="jdwos-repo"
 GITHUB_BRANCH="main"
 
 PKG_RAW="$1"
@@ -40,7 +40,7 @@ fi
 echo "[JDWorld OS] Pacchetto non installato. Controllo sul Cloud..."
 
 # Nota: Assicurati che il percorso punti a dove il tuo jdw-build pusha il file .info
-URL_CLOUD="https://githubusercontent.com"
+URL_CLOUD="https://raw.githubusercontent.com/JDWorld/jdwos-repo/main"
 
 if curl --output /dev/null --silent --head --fail "$URL_CLOUD"; then
     TMP_INFO="/tmp/$PKG_NAME.info"

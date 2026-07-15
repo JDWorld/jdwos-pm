@@ -1,3 +1,3 @@
 [🔥 JDWorld OS > 🛠️ Packages Manager (.JDW)]
-Elenco Pacchetti .JDW, kitty --config /usr/share/jdwos-cfg/jdwos-media-control.conf sh -c 'jdw-list; echo ""; read -p "Premi Invio per chiudere..."', system-software-update
-Informazioni Pacchetto, kitty --config /usr/share/jdwos-cfg/jdwos-media-control.conf sh -c 'read -p "Trascina o scrivi il percorso del file .jdw: " FILE && jdw-info $FILE && read -p "Premi Invio per chiudere..."', dialog-information
+Elenco Pacchetti .JDW, kitty --config /usr/share/jdwos-cfg/jdwos-pm.conf sh -c 'jdw-list; echo ""; read -p "Premi Invio per chiudere..."', system-software-update
+Informazioni Pacchetto, kitty --config /usr/share/jdwos-cfg/jdwos-pm.conf sh -c 'read -p "Trascina o scrivi il percorso del file .jdw: " FILE && jdw-info $FILE && read -p "Premi Invio per chiudere..."', dialog-information

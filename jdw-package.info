@@ -1,7 +1,7 @@
 pkgname=jdwos-pm
 version=1.0.4
 description=JDWorld OS Packages Manager
-dependencies=nessuna
+dependencies=kitty kdialog
 architecture=x86_64
 license=Simplified BSD License
 maintainer=JDWorld
