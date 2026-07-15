@@ -1,5 +1,5 @@
 pkgname=jdwos-pm
-version=1.0.4
+version=1.0.5
 description=JDWorld OS Packages Manager
 dependencies=kitty kdialog
 architecture=x86_64
@@ -7,5 +7,5 @@ license=Simplified BSD License
 maintainer=JDWorld
 package_size=36K
 Installed_size=36K
-Update_date=10-07-2026
+Update_date=15-07-2026
 build_date=19-06-2026

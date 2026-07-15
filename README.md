@@ -53,4 +53,4 @@ modification, are permitted provided that the following conditions are met:
 
 ---
 
-*Sviluppato come parte del sistema operativo personalizzato JÐWØ®LÐ ØS.*
+**Sviluppato come parte del sistema operativo personalizzato [JÐWØ®LÐ ØS](https://JDWorld.github.io/jdworldos)**
