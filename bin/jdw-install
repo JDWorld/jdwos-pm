@@ -4,7 +4,6 @@ INPUT=$1
 
 # Indirizzo della tua cartella centrale dei pacchetti su GitHub
 # (Usa l'URL '://githubusercontent.com' per scaricare i file binari puliti)
-# GIT_REPO_URL="https://githubusercontent.com/IL_TUO_USERNAME/IL_TUO_REPO/main"
 GIT_REPO_URL="https://github.com/JDWorld/jdwos-repo/releases/download/latest"
 
 if [ -z "$INPUT" ]; then
@@ -33,24 +32,12 @@ else
     echo -e "\e[1;34m[JDWorld OS]\e[0m Pacchetto locale non trovato."
     echo -e "\e[1;36m==> Ricerca online nel cloud di JDWorld:\e[0m $PACCHETTO_NAME..."
 
-    # Scarica il pacchetto forzando il tracking dei redirect di GitHub LFS
-    echo -e "Connessione a: $GIT_REPO_URL/$PACCHETTO_NAME"
+    # Scarica il pacchetto direttamente in /tmp/ usando wget
+    wget -q --show-progress "$GIT_REPO_URL/$PACCHETTO_NAME" -O "$TEMP_DIR/$PACCHETTO_NAME"
 
-    # Rimosso -q temporaneamente per vedere cosa succede, aggiunto --auth-no-challenge
-    wget --trust-server-names --show-progress "$GIT_REPO_URL/$PACCHETTO_NAME" -O "$TEMP_DIR/$PACCHETTO_NAME"
-
-    # Verifichiamo se il file esiste davvero ed è più grande di 1000 byte (evita i file vuoti o html di errore)
-    if [ $? -eq 0 ] && [ -s "$TEMP_DIR/$PACCHETTO_NAME" ] && [ $(stat -c%s "$TEMP_DIR/$PACCHETTO_NAME") -gt 1000 ]; then
+    if [ $? -eq 0 ] && [ -s "$TEMP_DIR/$PACCHETTO_NAME" ]; then
         echo -e "\e[1;32m[OK]\e[0m Scaricato con successo da GitHub!"
         FILE_TARGET="$TEMP_DIR/$PACCHETTO_NAME"
-    else
-        echo -e "\e[1;31m[ERRORE]\e[0m Il server non ha erogato il file reale. Controllo integrità fallito."
-        # Stampa l'URL esatto per fare il debug visivo immediato a schermo
-        echo "URL tentato: $GIT_REPO_URL/$PACCHETTO_NAME"
-        rm -rf "$TEMP_DIR"
-        exit 1
-    fi
-
     else
         echo -e "\e[1;31m[ERRORE]\e[0m Impossibile trovare il pacchetto '$INPUT' né in locale né su GitHub."
         rm -rf "$TEMP_DIR"
