@@ -27,8 +27,10 @@ fi
 if [ -f "$SRC_DIR/kitty/jdwos-pm.conf" ]; then
     sudo mkdir -p /usr/share/jdwos-cfg
     sudo cp "$SRC_DIR/kitty/jdwos-pm.conf" /usr/share/jdwos-cfg
+    sudo cp "$SRC_DIR/kitty/jdwos-pm.conf" /usr/share/colori.sh
     sudo chmod 644 /usr/share/jdwos-cfg/jdwos-pm.conf
-    echo "==>  Applicata Configurazione Kitty per Packages Manager."
+    sudo chmod +x /usr/share/jdwos-cfg/colori.sh
+    echo "==>  Applicata Configurazione Colori e Kitty per Packages Manager."
 fi
 
 # 4. Registrazione di sicurezza del PM stesso nel database locale

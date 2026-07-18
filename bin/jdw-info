@@ -1,53 +1,57 @@
 #!/usr/bin/env bash
-# jdw-info: Visualizzatore schede tecniche atomico
+# ==============================================================================
+# JDWorld OS v6.6.6 - Core Package Manager (jdw-pm)
+# File: /usr/bin/jdw-info - Visualizzazione Metadati Locale/Cloud Pages
+# ==============================================================================
 
-DB_LOCAL="/usr/share/jdwos-pkg/installed"
-GITHUB_USER="JDWorld"
-GITHUB_REPO="jdwos-repo"
-GITHUB_BRANCH="main"
+PACK_NAME="$1"
 
-PKG_RAW="$1"
-PKG_NAME=$(basename "$PKG_RAW" .jdw)
+# Percorsi rigidi locali dell'ecosistema v6.6.6
+LOCAL_DB="/usr/share/jdwos-pkg/installed"
+TMP_META="/tmp/${PACK_NAME}-cloud.info"
 
-if [ -z "$PKG_NAME" ]; then
-    echo "Errore: Specifica il nome di un pacchetto (es: jdwos-ff-stm)"
-    exit 1
-fi
+# Unico URL Cloud Centralizzato (Specchio pulito dei metadati senza .info)
+URL_PAGES="https://JDWorld.github.io/jdworldos/metadata/${PACK_NAME}"
 
-# FUNZIONE PER STAMPARE IN STILE TABELLA ARCH WEB
+# Colori di bordo per preservare lo stile Inferno
+RED='\033[0;31m'
+WHITE='\033[1;37m'
+NC='\033[0m'
+
 stampa_scheda() {
     local sorgente="$1"
-    echo "  =================================================="
-    echo "     SCHEDA TECNICA JDW ($sorgente) - $PKG_NAME"
-    echo "  =================================================="
-    while IFS='=' read -r chiave valore; do
-        # Salta righe vuote o commenti
-        [[ -z "$chiave" || "$chiave" =~ ^# ]] && continue
-        # Formatta l'output in stile tabella pulita
-        printf "    %-15s : %s\n" "$chiave" "$valore"
-    done < "$1"
-    echo "  =================================================="
+    local file_info="$2"
+
+    echo -e "${RED}==================================================${NC}"
+    echo -e "${WHITE}   SCHEDA TECNICA JDW ($sorgente) - ${PACK_NAME}${NC}"
+    echo -e "${RED}==================================================${NC}"
+
+    # Il tuo compilatore corazzato con sed che digerisce gli apostrofi italiani
+    cat "$file_info" 2>/dev/null
+
+    echo -e "${RED}==================================================${NC}"
 }
 
-# 1. CONTROLLO LOCALE (Istantaneo)
-if [ -f "$DB_LOCAL/$PKG_NAME" ]; then
-    echo "[JDWorld OS] Rilevato pacchetto installato localmente."
-    stampa_scheda "$DB_LOCAL/$PKG_NAME" "LOCALE"
+# --- FLUSSO DI CONTROLLO ATOMICO ---
+
+# 1. Verifica se il pacchetto è installato localmente
+if [ -f "${LOCAL_DB}/${PACK_NAME}" ]; then
+    stampa_scheda "LOCALE" "${LOCAL_DB}/${PACK_NAME}"
     exit 0
 fi
 
-# 2. CONTROLLO CLOUD (Scarica solo il file .info leggero)
-echo "[JDWorld OS] Pacchetto non installato. Controllo sul Cloud..."
+# 2. Fallback sul Cloud: Interroga solo lo specchio leggero su GitHub Pages
+echo -e "${WHITE}[JDWorld OS] Pacchetto non installato. Controllo sul Cloud...${NC}"
 
-# Nota: Assicurati che il percorso punti a dove il tuo jdw-build pusha il file .info
-URL_CLOUD="https://raw.githubusercontent.com/JDWorld/jdwos-repo/main"
+# Scarica al volo i pochissimi KB di metadati
+wget -q -O "$TMP_META" "$URL_PAGES" 2>/dev/null
 
-if curl --output /dev/null --silent --head --fail "$URL_CLOUD"; then
-    TMP_INFO="/tmp/$PKG_NAME.info"
-    curl -s "$URL_CLOUD" > "$TMP_INFO"
-    stampa_scheda "$TMP_INFO" "CLOUD"
-    rm -f "$TMP_INFO"
+# Controllo di integrità: se il file esiste ed è popolato, lo mostra
+if [ -s "$TMP_META" ]; then
+    stampa_scheda "CLOUD" "$TMP_META"
 else
-    echo "Errore: Pacchetto '$PKG_NAME' non trovato né in locale né sul Cloud."
-    exit 1
+    echo -e "${RED}[ERRORE] Pacchetto sconosciuto o metadati non raggiungibili sul Cloud Pages.${NC}"
 fi
+
+# Piallatura del file temporaneo in RAM
+rm -f "$TMP_META"
