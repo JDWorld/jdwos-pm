@@ -27,7 +27,7 @@ fi
 if [ -f "$SRC_DIR/kitty/jdwos-pm.conf" ]; then
     sudo mkdir -p /usr/share/jdwos-cfg
     sudo cp "$SRC_DIR/kitty/jdwos-pm.conf" /usr/share/jdwos-cfg
-    sudo cp "$SRC_DIR/kitty/jdwos-pm.conf" /usr/share/colori.sh
+    sudo cp "$SRC_DIR/kitty/jdwos-pm.conf" /usr/share/jdwos-cfg/colori.sh
     sudo chmod 644 /usr/share/jdwos-cfg/jdwos-pm.conf
     sudo chmod +x /usr/share/jdwos-cfg/colori.sh
     echo "==>  Applicata Configurazione Colori e Kitty per Packages Manager."
