@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# JÐWØ®LÐ Ø$: INFERNO CORE v6.6.6 - CORE UTILITY
+# File: /usr/bin/jdw-list - Elenco Pacchetti Registrati nel Database
+# ==============================================================================
+clear
+
+# Iniezione delle librerie e delle configurazioni core universali
+source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
+source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh"
+
+DB_LOCAL="/usr/share/jdworldos/jdwos-pkg/installed"
+
+if [ ! -d "$DB_LOCAL" ] || [ -z "$(ls -A "$DB_LOCAL")" ]; then
+    echo -e "${red}[JÐWØ®LÐ Ø$]${reset} Nessun pacchetto jdw installato sul sistema."
+    exit 0
+fi
+
+# 1. STATO_HEADER COORDINATO (Stile Orange Scuro del Package Manager)
+print_jdw_bar "$red"
+titolo_lista=$(print_rgr "⚡ INFRASTRUTTURA: DATABASE MODULI ATTIVI DI SISTEMA ⚡")
+centra_testo "$titolo_lista"
+print_jdw_bar "$red"
+
+    # Iniezione della frase random sotto l'header
+    centra_testo "$(genera_frase_random)"
+    echo ""
+
+# Intestazione della tabella formattata millimetricamente
+printf " ${yellowb}%-22s${reset} ${dim}|${reset} ${yellowb}%-12s${reset} ${dim}|${reset} ${yellowb}%s${reset}\n" " NOME PACCHETTO " "DATA BUILD" "DESCRIZIONE COMPLETA"
+print_jdw_bar "$red"
+
+# 2. MOTORE DI SCANSIONE LOCALE
+for file in "$DB_LOCAL"/*; do
+    [ -f "$file" ] || continue
+
+    # Inizializza le variabili per evitare residui dal ciclo precedente
+    p_name=""
+    p_date=""
+    p_desc=""
+
+    # Legge il file riga per riga ed estrae i metadati strutturati
+    # TRUCCO: Pialliamo al volo gli apici singoli e doppi del PKGBUILD con tr
+    while IFS='=' read -r chiave valore; do
+        valore_pulito=$(echo "$valore" | tr -d '"'\')
+        case "$chiave" in
+            pkgname)     p_name=" $valore_pulito" ;;
+            build_date)  p_date=" $valore_pulito" ;;
+            description|pkgdesc) p_desc=" $valore_pulito" ;;
+        esac
+    done < "$file"
+
+    # Se il file non aveva le chiavi standard, usa il nome del file come fallback
+    [ -z "$p_name" ] && p_name=" $(basename "$file")"
+    [ -z "$p_date" ] && p_date=" N/D"
+    [ -z "$p_desc" ] && p_desc=" Nessuna descrizione presente nel manifest."
+
+    # Tronca la descrizione a 48 caratteri se è troppo chilometrica per non sballare Kitty
+    if [ ${#p_desc} -gt 48 ]; then
+        p_desc="${p_desc:0:45}..."
+    fi
+
+    # 3. STAMPA DELLA RIGA FORMATTATA CON SEPARATORI CROMATICI
+    printf " ${white}%-22s${reset} ${dim}|${reset} ${orange}%-12s${reset} ${dim}|${reset} ${dim}%s${reset}\n" "$p_name" "$p_date" "$p_desc"
+done
+
+# 4. STATO_FOOTER DI CHIUSURA BOX
+print_jdw_bar "$red"
+echo ""

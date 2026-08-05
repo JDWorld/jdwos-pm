@@ -1,0 +1,8 @@
+# Ignora i file temporanei e di salvataggio di Kate
+*~
+*.swp
+
+# Ignora eventuali file tar/zip/jdw di test locali pesanti
+*.tar.gz
+*.zip
+*.jdw

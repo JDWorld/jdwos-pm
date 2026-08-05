@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# JÐWØ®LÐ Ø$: INFERNO CORE v6.6.6 - CORE UTILITY
+# File: /usr/bin/jdw-install - Gestore Pacchetti Ibrido (Orange Layout)
+# ==============================================================================
+clear
+
+# Iniezione delle librerie e delle configurazioni core universali
+source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
+source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
+
+INPUT=$1
+GIT_REPO_URL="https://github.com/JDWorld/jdwos-repo/releases/download/latest"
+
+# 1. RENDERING SCHERMATA INSTALLATORE (Stile Orange Scuro JDWOS-PM)
+print_jdw_bar "$red"
+titolo_install=$(print_rgr "⚡ JÐWØ®LÐ Ø$: INSTALLATORE IBRIDO PACCHETTI .JDW ⚡")
+centra_testo "$titolo_install"
+print_jdw_bar "$red"
+echo ""
+
+    # Iniezione della frase random sotto l'header
+    centra_testo "$(genera_frase_random)"
+    echo ""
+
+if [ -z "$INPUT" ]; then
+    echo -e "  ${redb}[!] Errore: Specificare il pacchetto target.${reset}"
+    echo -e "  Uso locale: sudo jdw-install nome_pacchetto.jdw"
+    echo -e "  Uso online: sudo jdw-install nome-pacchetto\n"
+    print_jdw_bar "$red"
+    exit 1
+fi
+
+if [ "$EUID" -ne 0 ]; then
+    echo -e "  ${redb}[!] Errore: Privilegi insufficienti. Esegui il comando con sudo.${reset}\n"
+    print_jdw_bar "$red"
+    exit 1
+fi
+
+# Crea una cartella temporanea sicura in RAM per il download
+TEMP_DIR=$(mktemp -d /tmp/jdwos-installer.XXXXXX)
+FILE_TARGET=""
+
+# Estrattore del nome pulito del pacchetto (Rimuove directory ed estensioni)
+BASE_INPUT=$(basename "$INPUT")
+P_CLEAN_NAME="${BASE_INPUT%.jdw}"
+# Estrattore del nome pulito del pacchetto per la disinstallazione dello stesso
+P_REMOVE_NAME="${P_CLEAN_NAME}-remove.sh"
+
+# 2. LOGICA IBRIDA: CONTROLLO LOCALE / CLOUD CLUSTER
+if [ -f "$INPUT" ]; then
+    echo -e "  ${orange}[*] Rilevato pacchetto locale. Elaborazione sorgenti...${reset}"
+    FILE_TARGET="$INPUT"
+else
+    PACCHETTO_NAME="${P_CLEAN_NAME}.jdw"
+    echo -e "  ${yellow}[INFO] Pacchetto locale non trovato.${reset}"
+    echo -e "  ${orange}[*] Ricerca nel Cloud Cluster JDWorld Pages:${reset} ${white}$PACCHETTO_NAME${reset}\n"
+
+    # Scarica visualizzando la barra di progressione nativa dentro l'allineamento
+    wget --show-progress "$GIT_REPO_URL/$PACCHETTO_NAME" -O "$TEMP_DIR/$PACCHETTO_NAME"
+
+    if [ $? -eq 0 ] && [ -s "$TEMP_DIR/$PACCHETTO_NAME" ]; then
+        echo -e "\n  ${greenb}[✔] Sincronizzazione ed estrazione Cloud completata!${reset}"
+        FILE_TARGET="$TEMP_DIR/$PACCHETTO_NAME"
+    else
+        echo -e "\n  ${redb}[ERRORE CRITICO] Risorsa non raggiungibile sul Cloud o pacchetto inesistente.${reset}\n"
+        rm -rf "$TEMP_DIR"
+        print_jdw_bar "$red"
+        exit 1
+    fi
+fi
+
+# 3. FASE DI ESTRAZIONE E INIEZIONE SORGENTI
+echo -e "  ${dim}[*] Apertura archivio compresso e verifica conformità...${reset}"
+EXTRACT_DIR=$(mktemp -d /tmp/jdwos-exec.XXXXXX)
+tar -xzf "$FILE_TARGET" -C "$EXTRACT_DIR"
+
+if [ -f "$EXTRACT_DIR/install.sh" ]; then
+    echo -e "  ${green}[INFO] Esecuzione dello script di installazione interno...${reset}\n"
+
+    # Esporta correttamente l'utente per mantenere i profili Kitty personali attivi
+    export SUDO_USER=$SUDO_USER
+
+    # Esegue l'installatore nativo del pacchetto passandogli la cartella in RAM
+    bash "$EXTRACT_DIR/install.sh" "$EXTRACT_DIR"
+
+    echo -e "\n  ${greenb}[✔] Installazione ultimata con successo!${reset}"
+
+    # --- AUTOMAZIONE MANIFEST FIX: REGISTRAZIONE NEL DATABASE LOCALE ---
+    # Ora usa i percorsi corretti ereditati dalla RAM ($EXTRACT_DIR) e il nome pulito ($P_CLEAN_NAME)
+    mkdir -p /usr/share/jdworldos/jdwos-pkg/installed
+    if [ -f "$EXTRACT_DIR/jdw-package.info" ]; then
+        cp "$EXTRACT_DIR/jdw-package.info" "/usr/share/jdworldos/jdwos-pkg/installed/${P_CLEAN_NAME}"
+    fi
+
+    mkdir -p /usr/share/jdworldos/jdwos-pkg/uninstall.d
+    if [ -f "$EXTRACT_DIR/remove.sh" ]; then
+        cp "$EXTRACT_DIR/remove.sh" "/usr/share/jdworldos/jdwos-pkg/uninstall.d/${P_REMOVE_NAME}"
+    fi
+else
+    echo -e "  ${redb}[ERRORE] Il pacchetto non è conforme agli standard JDW (Manca install.sh).${reset}"
+fi
+
+# 4. BONIFICA TOTALE ISTANTANEA DELLA RAM
+rm -rf "$TEMP_DIR"
+rm -rf "$EXTRACT_DIR"
+
+echo ""
+print_jdw_bar "$red"
+# RIGIDO STATO_FOOTER FINALE COERENTE CON L'INFERNO CORE
+echo -e "  ${white}🌐 DEPLOY STATUS:${reset} ${greenb}[SUCCESS]${reset} ${dim}|${reset} ${white}MODULE:${reset} ${yellowb}${P_CLEAN_NAME}${reset} ${dim}|${reset} ${white}DB_REGIST: ${greenb}OK${reset}"
+print_jdw_bar "$red"
+echo ""

@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# JÐWØ®LÐ Ø$: INFERNO CORE v6.6.6 - CORE UTILITY
+# File: /usr/bin/jdw-remove - Disinstallatore Universale Modulare (Orange Layout)
+# ==============================================================================
+clear
+source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
+source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
+
+PACCHETTO=$1
+UNINSTALL_SCRIPT="/usr/share/jdworldos/jdwos-pkg/uninstall.d/${PACCHETTO}-remove.sh"
+
+# 1. RENDERING SCHERMATA DISINSTALLATORE (Stile Orange Scuro JDWOS-PM)
+print_jdw_bar "$red"
+titolo_remove=$(print_rgr "⚡ JÐWØ®LÐ Ø$: PURIFICATORE E WIPE MODULI .JDW ⚡")
+centra_testo "$titolo_remove"
+print_jdw_bar "$red"
+    # Iniezione della frase random sotto l'header
+    centra_testo "$(genera_frase_random)"
+    echo ""
+
+# Controllo privilegi di Root obbligatori per toccare i file di sistema
+if [ "$EUID" -ne 0 ]; then
+    echo -e "  ${redb}[!] Errore: Privilegi insufficienti. Esegui il comando con sudo.${reset}\n"
+    print_jdw_bar "$red"
+    exit 1
+fi
+
+if [ -z "$PACCHETTO" ]; then
+    echo -e "  ${redb}[!] Errore: Specificare il nome del pacchetto da rimuovere.${reset}"
+    echo -e "  Uso corretto: sudo jdw-remove [nome-pacchetto]\n"
+    print_jdw_bar "$red"
+    exit 1
+fi
+
+echo -e "  ${orange}[*] Richiesta di rimozione e bonifica per:${reset} ${white}$PACCHETTO${reset}"
+
+# 2. FLUSSO DI VERIFICA ED ESECUZIONE WIPE
+if [ -f "$UNINSTALL_SCRIPT" ]; then
+    echo -e "  ${dim}==> Rilevato hook specifico. Avvio dello script di rimozione...${reset}\n"
+
+    # Esporta correttamente SUDO_USER per consentire allo script di ripulire le Home utente
+    export SUDO_USER=$SUDO_USER
+    bash "$UNINSTALL_SCRIPT"
+
+    # Rimuove lo script di disinstallazione stesso dal sistema per non lasciare tracce
+    rm -f "$UNINSTALL_SCRIPT"
+
+    # FIX MANIFEST BUG: Rimuove dinamicamente il pacchetto dal database di jdw-list
+    rm -f "/usr/share/jdworldos/jdwos-pkg/installed/$PACCHETTO"
+    rm -f "/usr/share/jdworldos/jdwos-pkg/uninstall.d/$PACCHETTO-remove.sh"
+    rm -rf "/usr/share/$PACCHETTO"
+
+    echo ""
+    print_jdw_bar "$red"
+    # STATO_FOOTER FINALE DI SUCCESSO WIPE
+    echo -e "  ${white}🌐 WIPE STATUS:${reset} ${greenb}[CLEANED]${reset} ${dim}|${reset} ${white}MODULE:${reset} ${yellowb}${PACCHETTO}${reset} ${dim}|${reset} ${white}DB_REMOVE: ${greenb}OK${reset}"
+    print_jdw_bar "$red"
+    echo ""
+else
+    echo -e "  ${redb}[ERRORE] Nessuno script di rimozione trovato per '$PACCHETTO'.${reset}"
+    echo -e "  Il modulo potrebbe non essere installato o non essere un pacchetto nativo .jdw.\n"
+    print_jdw_bar "$red"
+    exit 1
+fi

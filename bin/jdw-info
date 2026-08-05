@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# JDWorld OS v6.6.6 - Core Package Manager (jdw-pm)
+# File: /usr/bin/jdw-info - Visualizzazione Metadati Locale/Cloud Pages
+# ==============================================================================
+clear
+
+# Iniezione delle librerie e delle configurazioni core universali
+source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
+source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
+
+PACK_NAME="$1"
+
+# Percorsi rigidi locali dell'ecosistema v6.6.6
+LOCAL_DB="/usr/share/jdworldos/jdwos-pkg/installed"
+TMP_META="/tmp/${PACK_NAME}-cloud.info"
+
+# Unico URL Cloud Centralizzato (Specchio pulito dei metadati senza .info)
+URL_PAGES="https://JDWorld.github.io/jdworldos/metadata/${PACK_NAME}"
+
+# --- LA FUNZIONE INTERNA GRAFICA AGGIORNATA IN INFERNO STYLE ---
+stampa_scheda() {
+    local sorgente="$1"
+    local file_info="$2"
+
+    clear
+    # 1. STATO_HEADER (Orange Scuro coordinato al Package Manager)
+    print_jdw_bar "$red"
+    local titolo_sezione=$(print_rgr "======= ⚡ METADATA INSPECTOR: ${PACK_NAME} ⚡ =======")
+    centra_testo "$titolo_sezione"
+    print_jdw_bar "$red"
+
+    # Iniezione della frase random sotto l'header
+    centra_testo "$(genera_frase_random)"
+    echo ""
+
+    # 2. IL CORPO DELLA SCHEDA (Mantiene il tuo cat atomico originale)
+    # TRUCCO: Usiamo un ciclo di lettura riga per riga per formattare al volo il testo piatto
+    while IFS= read -r linea; do
+        if [[ -z "$linea" ]]; then
+            continue
+        elif [[ "$linea" == *"="* && "$linea" != "===="* ]]; then
+            # Se la riga è una variabile tipo pkgname="valore", la separiamo in modo elegante
+            local tag=$(echo "$linea" | cut -d= -f1)
+            local val=$(echo "$linea" | cut -d= -f2- | tr -d '"'\')
+
+            # Applica i tag con le icone visive a seconda della variabile rilevata
+            case "$tag" in
+                pkgname)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "📦 PACKAGE NAME:"     "$val" ;;
+                pkgver)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "📌 VERSION:"     "$val" ;;
+                pkgdesc)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "📖 DESCRIPTION:"  "$val" ;;
+                dependencies)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "⚙️ DEPENDENCIES:"  "  $val" ;;
+                architecture)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "🎨 ARCHITECTURE:"      "$val" ;;
+                license)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "📝 LICENSE:"      "$val" ;;
+                maintainer)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "👻 DEVELOPERS" "$val" ;;
+                package_size)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "💾 PACKAGE SIZE:"      "$val" ;;
+                installed_size)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "📊 INSTALLED SIZE:" "$val" ;;
+                build_date)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "📅 BUILD DATE:" "$val" ;;
+                update_date)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "📆 UPDATE DATE:" "$val" ;;
+
+                *)
+                    printf "  ${yellowb}%-23b${reset} %s\n" "${tag^^}:"        "$val" ;;
+            esac
+        else
+            echo -e "  ${white}${linea}${reset}"
+        fi
+    done < "$file_info"
+
+    echo ""
+    print_jdw_bar "$red"
+    # 3. STATO_FOOTER CON LE VARIABILI DI INTEGRITÀ UNIFICATE
+    centra_testo "${white}🌐 STATUS:${reset} ${greenb}STABLE BUNDLE${reset} ${dim}|${reset} ${white}ORIGINE:${reset} ${yellowb}$sorgente${reset} ${dim}|${reset} ${white}INTEGRITÀ:${reset} ${greenb}OK${reset}"
+    print_jdw_bar "$red"
+    echo ""
+}
+
+# --- FLUSSO DI CONTROLLO ATOMICO ---
+
+if [ -z "$PACK_NAME" ]; then
+    echo -e "${red}[!] Errore: Specificare il nome di un pacchetto.${reset}"
+    exit 1
+fi
+
+# 1. Verifica se il pacchetto è installato localmente
+if [ -f "${LOCAL_DB}/${PACK_NAME}" ]; then
+    stampa_scheda "LOCALE" "${LOCAL_DB}/${PACK_NAME}"
+    exit 0
+fi
+
+# 2. Fallback sul Cloud: Interroga solo lo specchio leggero su GitHub Pages
+echo -e "${red}[JÐWØ®LÐ Ø$]: $(print_ita ' Pacchetto non installato. Controllo sul Cloud...')${reset}"
+echo ""
+
+# Scarica al volo i pochissimi KB di metadati
+wget -q -O "$TMP_META" "$URL_PAGES" 2>/dev/null
+
+# Controllo di integrità: se il file esiste ed è popolato, lo mostra
+if [ -s "$TMP_META" ]; then
+    stampa_scheda "CLOUD" "$TMP_META"
+else
+    echo -e "${red}[ERRORE]: $(print_rgr ' Pacchetto sconosciuto o metadati non raggiungibili sul Cloud Pages.')${reset}"
+fi
+
+# Piallatura del file temporaneo in RAM
+rm -f "$TMP_META"
