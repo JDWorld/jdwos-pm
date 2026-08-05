@@ -36,6 +36,5 @@ if [ -f "$SRC_DIR/remove.sh" ]; then
 fi
 
 sudo jdw-install jdwos-corelib
-sudo jdw-install jdwos-stm
 
 echo "✔️  JDWorld OS: Gestore dei Pacchetti JDW installato e pronto all'azione!"
