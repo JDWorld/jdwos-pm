@@ -54,7 +54,7 @@ if [ -f "$UNINSTALL_SCRIPT" ]; then
     echo ""
     print_jdw_bar "$red"
     # STATO_FOOTER FINALE DI SUCCESSO WIPE
-    echo -e "  ${white}🌐 WIPE STATUS:${reset} ${greenb}[CLEANED]${reset} ${dim}|${reset} ${white}MODULE:${reset} ${yellowb}${PACCHETTO}${reset} ${dim}|${reset} ${white}DB_REMOVE: ${greenb}OK${reset}"
+    echo -e "  ${orange}🌐 WIPE STATUS:${reset} ${greenb}[CLEANED]${reset} ${dim}|${reset} ${orange}MODULE:${reset} ${redb}${PACCHETTO}${reset} ${dim}|${reset} ${orange}DB_REMOVE: ${greenb}OK${reset}"
     print_jdw_bar "$red"
     echo ""
 else
