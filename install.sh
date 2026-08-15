@@ -28,6 +28,7 @@ if [ -f "$SRC_DIR/remove.sh" ]; then
     sudo chmod +x "/usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh"
 fi
 
-exec bash && sudo jdw-install jdwos-corelib
+sudo jdw-install jdwos-corelib
 
 echo "✔️  JDWorld OS: Gestore dei Pacchetti JDW installato e pronto all'azione!"
+cd ..
