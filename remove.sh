@@ -3,7 +3,7 @@
 TARGET_HOME="/home/${SUDO_USER}"
 
 echo "==> Eliminazione file di sistema del PM (Root)..."
-rm -rf /usr/share/jdwos-stm/menu.d/jdwos-pm-stm.txt
+rm -rf /usr/share/jdworldos/jdwos-stm/menu.d/jdwos-pm-stm.txt
 
 # Rimuove anche i binari dell'installatore e del disinstallatore
 # se hai scelto di includerli in questo pacchetto core
@@ -11,9 +11,11 @@ rm -f /usr/bin/jdw-info
 rm -f /usr/bin/jdw-install
 rm -f /usr/bin/jdw-list
 rm -f /usr/bin/jdw-remove
-rm -f /usr/share/jdwos-pkg/installed/jdwos-pm
-rm -f /usr/share/jdwos-stm/menu.d/jdwos-pm-stm.txt
-rm -f /usr/share/jdwos-cfg/jdwos-pm.conf
+rm -f /usr/bin/jdw-help
+rm -f /usr/share/jdworldos/jdwos-pkg/installed/jdwos-pm
+rm -f /usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh
+rm -f /usr/share/jdworldos/jdwos-stm/menu.d/jdwos-pm-stm.txt
+rm -f /usr/share/jdworldos/jdwos-cfg/jdwos-pm.conf
 
 echo "==> Eliminazione file utente nella Home di ${SUDO_USER}..."
 rm -rf "${TARGET_HOME}/.local/share/jdwos-stm/menu.d/jdw-pm-stm.txt"

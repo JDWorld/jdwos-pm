@@ -1,0 +1,126 @@
+#!/bin/bash
+clear
+
+# Iniezione delle librerie stabili di sistema
+source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
+source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
+source "/usr/share/jdworldos/jdwos-config/jdwos-icore.txt" 2>/dev/null
+
+# --- 1. COPIA DELLE CONFIGURAZIONI (SKEL DINAMICO) ---
+USER_FF="$HOME/.config/fastfetch"
+USER_KITTY="$HOME/.config/kitty"
+
+# Se la cartella fastfetch non esiste o è vuota, copia i file centrali di JDWOS
+if [ ! -d "$USER_FF" ] || [ -z "$(ls -A "$USER_FF" 2>/dev/null)" ]; then
+    mkdir -p "$USER_FF"
+    cp -rf /usr/share/jdworldos/jdwos-stm-ff/fastfetch/. "$USER_FF/" 2>/dev/null
+fi
+
+# Se la cartella kitty non esiste o è vuota, copia i file centrali di JDWOS
+if [ ! -d "$USER_KITTY" ] || [ -z "$(ls -A "$USER_KITTY" 2>/dev/null)" ]; then
+    mkdir -p "$USER_KITTY"
+    cp -rf /usr/share/jdworldos/jdwos-stm-ff/kitty/. "$USER_KITTY/" 2>/dev/null
+fi
+
+
+mostra_menu_help (){
+    clear
+    print_jdw_bar "$red"
+    centra_testo "$(print_rgr "======= ❓  JÐWØ®LÐ Ø$: SYSTEM INFO HELP!  ❓ =======")"
+    print_jdw_bar "$red"
+    centra_testo "$(genera_frase_random)"
+
+    print_jdw_bar "$redd"
+    # --- SEZIONE LUIS LEGACY & SYSTEM COMMANDS (L'eredità di Jack sulla barca) ---
+    centra_testo "$(print_ita "[ COMANDI DI SISTEMA ]")"
+    echo ""
+    stampa_voce_allineata_help_red "jdw-help" "" "Per vedere questa schermata di aiuto"
+#    print_jdw_bar "$redd"
+    echo ""
+    stampa_voce_allineata_help_orange "jdw-install" "" "Lancia l'installatore atomico dei pacchetti JDW"
+    stampa_voce_allineata_help_orange "jdw-remove" "" "Disinstalla il pacchetto JDW lasciando il sistema immacolato"
+    stampa_voce_allineata_help_orange "jdw-info" "" "Mostra Informazioni sul pacchetto JDW (LOCALE/CLOUD)"
+    stampa_voce_allineata_help_orange "jdw-list" "" "Mostra i Pacchetti JDW installati nel sistema"
+#    print_jdw_bar "$redd"
+    echo ""
+    stampa_voce_allineata_help_yellow "fastfetch" "" "Per visualizzare il layout completo (Hardware + Software)"
+    stampa_voce_allineata_help_yellow "ff-hard" "" "Per visualizzare solo le info hardware custom."
+    stampa_voce_allineata_help_yellow "ff-soft" "" "Per visualizzare solo le info software custom"
+    stampa_voce_allineata_help_yellow "ff-stock" "" "Per visualizzare le info predefinite di sistema"
+#    print_jdw_bar "$redd"
+    echo ""
+    stampa_voce_allineata_help_green "jdw-mc" "" "Lancia il JÐWØ®LÐ Ø$ Media-Grabber (Boccaporto Edition)"
+    stampa_voce_allineata_help_green "jdw-wp-animate" "" "Lancia lo Switch per i Wallpaper Animati in formato WEBP"
+    stampa_voce_allineata_help_green "jdw-wp-horror" "" "Lancia lo Switch per i Wallpaper Horror in formato JPG"
+    stampa_voce_allineata_help_green "jdw-ic666" "" "Lancia Inferno Core v6.6.6, la Suite Infernale del JÐWØ®LÐ Ø$"
+#    print_jdw_bar "$redd"
+    echo ""
+#    stampa_voce_allineata_help_green "" "" ""
+#    stampa_voce_allineata_help_green "" "" ""
+
+}
+# --- 2. INTERFACCIA GRAFICA E GUIDA A COLORI ---
+clear
+mostra_menu_help
+echo ""
+echo ""
+echo -e "\e[1;31m Premi [INVIO] o scrivi 'exit' per chiudere questa finestra... \e[0m"
+echo ""
+
+# --- 3. BLOCCO DI ATTESA PER EVITARE LA CHIUSURA DI KITTY ---
+# Invece di far morire lo script (e chiudere kitty), aspettiamo un input dell'utente.
+# Se l'utente preme semplicemente invio o scrive qualcosa, la finestra si chiude in modo pulito.
+# --- Sostituisci il vecchio "read -p ..." in fondo a ff-help.sh con questo: ---
+read -p "☠️ ${redb}JÐWØ®LÐ Ø$ ${green}> ❓ ${orange}HELP ${green}>${reset} " input
+
+case "$input" in
+
+    jdw-help)
+        jdw-help
+        ;;
+    jdw-install)
+        jdw-installati
+        ;;
+    jdw-remove)
+        jdw-remove
+        ;;
+    jdw-info)
+        jdw-info
+        ;;
+    jdw-list)
+        jdw-list
+        ;;
+    ff-stock)
+        fastfetch
+        ;;
+    ff-hard)
+        fastfetch -c /usr/share/jdworldos/jdwos-stm-ff/fastfetch/jdwos_hard.jsonc
+        ;;
+    ff-soft)
+        fastfetch -c /usr/share/jdworldos/jdwos-stm-ff/fastfetch/jdwos_soft.jsonc
+        ;;
+    fastfetch)
+        fastfetch -c /usr/share/jdworldos/jdwos-stm-ff/fastfetch/jdwos_full.jsonc
+        ;;
+    jdw-mc)
+        jdw-mc
+        ;;
+    jdw-wp-animate)
+        jdw-wp-animate
+        ;;
+    jdw-wp-horror)
+        jdw-wp-horror
+        ;;
+    jdw-ic666)
+        jdw-ic666
+        ;;
+    exit|""|*)
+        exit 0
+        ;;
+esac
+
+# Dopo aver eseguito il comando scelto, tieni aperto per far leggere il risultato
+echo -e "\n\e[1;31mPremi [INVIO] per uscire...\e[0m"
+read -p ""
+exit 0
+

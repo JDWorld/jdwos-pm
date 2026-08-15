@@ -16,6 +16,18 @@ if [ -d "$SRC_DIR/bin" ] && [ "$(ls -A $SRC_DIR/bin)" ]; then
     sudo chmod +x /usr/bin/jdw-*
 fi
 
-sudo jdw-install jdwos-corelib
+# 4. Registrazione di sicurezza del PM stesso nel database locale
+if [ -f "$SRC_DIR/jdw-package.info" ]; then
+    sudo cp "$SRC_DIR/jdw-package.info" /usr/share/jdworldos/jdwos-pkg/installed/jdwos-pm
+fi
+
+# 4. Registrazione del disinstallatore modulare di sistema
+sudo mkdir -p /usr/share/jdwos-pkg/uninstall.d
+if [ -f "$SRC_DIR/remove.sh" ]; then
+    sudo cp "$SRC_DIR/remove.sh" "/usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh"
+    sudo chmod +x "/usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh"
+fi
+
+sudo exec bash && sudo jdw-install jdwos-corelib
 
 echo "✔️  JDWorld OS: Gestore dei Pacchetti JDW installato e pronto all'azione!"
