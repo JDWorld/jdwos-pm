@@ -15,7 +15,7 @@ rm -f /usr/bin/jdw-help
 rm -f /usr/share/jdworldos/jdwos-pkg/installed/jdwos-pm
 rm -f /usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh
 rm -f /usr/share/jdworldos/jdwos-stm/menu.d/jdwos-pm-stm.txt
-rm -f /usr/share/jdworldos/jdwos-cfg/jdwos-pm.conf
+
 
 echo "==> Eliminazione file utente nella Home di ${SUDO_USER}..."
 rm -rf "${TARGET_HOME}/.local/share/jdwos-stm/menu.d/jdw-pm-stm.txt"

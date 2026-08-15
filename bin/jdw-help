@@ -79,10 +79,10 @@ case "$input" in
         jdw-help
         ;;
     jdw-install)
-        jdw-installati
+        echo -e "Scrivere: sudo jdw-install nome-pacchetto"
         ;;
     jdw-remove)
-        jdw-remove
+        echo -e "Scrivere: sudo jdw-install nome-pacchetto"
         ;;
     jdw-info)
         jdw-info

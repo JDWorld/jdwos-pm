@@ -1,5 +1,5 @@
 pkgname=jdwos-pm
-pkgver=1.1.0
+pkgver=1.1.9
 pkgdesc=JDWorld OS Package Manager Universale
 dependencies=kdialog jdwos-corelib
 architecture=x86_64 / JDW
@@ -7,5 +7,5 @@ license=Simplified BSD License
 maintainer=JDWorld
 package_size=476K
 installed_size=476K
-build_date=19-06-2026
+build_date=18-06-2026
 update_date=14-08-2026
