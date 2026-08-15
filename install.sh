@@ -22,7 +22,7 @@ if [ -f "$SRC_DIR/jdw-package.info" ]; then
 fi
 
 # 4. Registrazione del disinstallatore modulare di sistema
-sudo mkdir -p /usr/share/jdwos-pkg/uninstall.d
+sudo mkdir -p /usr/share/jdworldos/jdwos-pkg/uninstall.d
 if [ -f "$SRC_DIR/remove.sh" ]; then
     sudo cp "$SRC_DIR/remove.sh" "/usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh"
     sudo chmod +x "/usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh"
