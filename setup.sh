@@ -19,5 +19,5 @@ fi
 echo "🧼 Rimozione file temporanei di setup..."
 cd ..
 rm -rf "$SRC_DIR"
-
-echo -e "\e[1;32m✔️  Sistema immacolato. Il Package Manager è nativo.\e[0m"
+cd ..
+echo -e "\e[1;32m✔️  Sistema immacolato. Il Package Manager è stato installato.\e[0m"

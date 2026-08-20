@@ -4,6 +4,8 @@
 # File: /usr/bin/jdw-remove - Disinstallatore Universale Modulare (Orange Layout)
 # ==============================================================================
 clear
+# Iniezione immediata della libreria condivisa centralizzata di Jack
+source "/usr/share/jdworldos/jdwos-lib/jdwos-hfcore.sh" 2>/dev/null
 source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
 source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
 
@@ -16,7 +18,7 @@ titolo_remove=$(print_rgr "⚡ JÐWØ®LÐ Ø$: PURIFICATORE E WIPE MODULI .JDW 
 centra_testo "$titolo_remove"
 print_jdw_bar "$red"
     # Iniezione della frase random sotto l'header
-    centra_testo "$(genera_frase_random)"
+    jdw_header_dinamico
     echo ""
 
 # Controllo privilegi di Root obbligatori per toccare i file di sistema

@@ -4,10 +4,10 @@
 # File: /usr/bin/jdw-list - Elenco Pacchetti Registrati nel Database
 # ==============================================================================
 clear
-
-# Iniezione delle librerie e delle configurazioni core universali
+# Iniezione immediata della libreria condivisa centralizzata di Jack
+source "/usr/share/jdworldos/jdwos-lib/jdwos-hfcore.sh" 2>/dev/null
 source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
-source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh"
+source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
 
 DB_LOCAL="/usr/share/jdworldos/jdwos-pkg/installed"
 
@@ -23,7 +23,7 @@ centra_testo "$titolo_lista"
 print_jdw_bar "$red"
 
     # Iniezione della frase random sotto l'header
-    centra_testo "$(genera_frase_random)"
+    jdw_header_dinamico
     echo ""
 
 # Intestazione della tabella formattata millimetricamente

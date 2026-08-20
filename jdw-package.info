@@ -1,5 +1,5 @@
 pkgname=jdwos-pm
-pkgver=1.1.9
+pkgver=1.2.0
 pkgdesc=JDWorld OS Package Manager Universale
 dependencies=kdialog jdwos-corelib
 architecture=x86_64 / JDW
