@@ -8,7 +8,7 @@ clear
 source "/usr/share/jdworldos/jdwos-lib/jdwos-hfcore.sh" 2>/dev/null
 source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
 source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
-
+rivela_distro
     while true; do
     clear
         PKG="JDW-HELP"
@@ -55,11 +55,12 @@ fi
     CMD_WPAN="/usr/bin/jdw-wp-animate"
     CMD_WEBD="/usr/bin/jdw-webdev"
     CMD_MUSI="/usr/bin/jdw-music"
+    CMD_META="/usr/bin/jdw-metal"
     CMD_I666="/usr/bin/jdw-ic666"
     CMD_NETB="/usr/bin/jdw-netbird"
     CMD_NUKE="/usr/bin/jdw-nuke"
 
-    if [ -f "$CMD_MEGR" ] || [ -f "$CMD_NETB" ] || [ -f "$CMD_NUKE" ] || [ -f "$CMD_MCPR" ] || [ -f "$CMD_WPHO" ] || [ -f "$CMD_WPAN" ] || [ -f "$CMD_WEBD" ] || [ -f "$CMD_META" ] || [ -f "$CMD_I666" ]; then
+    if [ -f "$CMD_MEGR" ] || [ -f "$CMD_NETB" ] || [ -f "$CMD_NUKE" ] || [ -f "$CMD_MCPR" ] || [ -f "$CMD_WPHO" ] || [ -f "$CMD_WPAN" ] || [ -f "$CMD_WEBD" ] || [ -f "$CMD_MUSI" ] || [ -f "$CMD_I666" ]; then
         echo -e "  $(print_grg "[ JÐWØ®LÐ Ø$: TERMINAL USER INTERFACE ]")"
     fi
 
@@ -114,9 +115,10 @@ fi
 #        stampa_voce_allineata_help_orange "" "" ""
 #        stampa_voce_allineata_help_orange "" "" ""
         echo ""
-        print_jdw_bar "$red"
+        stampa_footer_stato "$red"
         stampa_voce_allineata_help_red "Q" "Exit" "Uscita da JÐWØ®LÐ Ø$: MANUAL HELP"
         echo ""
+
 
     # Prompt interattivo testuale esteso (Accetta comandi completi o sigle)
     echo -ne "${red} 🔥 JÐWØ®LÐ Ø$ ${green}> ${reset} "
