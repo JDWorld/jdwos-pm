@@ -53,41 +53,57 @@ fi
     CMD_MCPR="/usr/bin/jdw-mcpro"
     CMD_WPHO="/usr/bin/jdw-wp-horror"
     CMD_WPAN="/usr/bin/jdw-wp-animate"
-    CMD_RADI="/usr/bin/jdw-radio"
-    CMD_META="/usr/bin/jdw-metal"
+    CMD_WEBD="/usr/bin/jdw-webdev"
+    CMD_MUSI="/usr/bin/jdw-music"
     CMD_I666="/usr/bin/jdw-ic666"
+    CMD_NETB="/usr/bin/jdw-netbird"
+    CMD_NUKE="/usr/bin/jdw-nuke"
 
-    if [ -f "$CMD_MEGR" ] || [ -f "$CMD_MCPR" ] || [ -f "$CMD_WPHO" ] || [ -f "$CMD_WPAN" ] || [ -f "$CMD_RADI" ] || [ -f "$CMD_META" ] || [ -f "$CMD_I666" ]; then
+    if [ -f "$CMD_MEGR" ] || [ -f "$CMD_NETB" ] || [ -f "$CMD_NUKE" ] || [ -f "$CMD_MCPR" ] || [ -f "$CMD_WPHO" ] || [ -f "$CMD_WPAN" ] || [ -f "$CMD_WEBD" ] || [ -f "$CMD_META" ] || [ -f "$CMD_I666" ]; then
         echo -e "  $(print_grg "[ JÐWØ®LÐ Ø$: TERMINAL USER INTERFACE ]")"
     fi
 
-    if [ -f "$CMD_MEGR" ]; then
-        stampa_voce_allineata_help_orange "jdw-mc" "" "Lancia il JÐWØ®LÐ Ø$ Media-Grabber (Boccaporto Edition)"
+    if [ -f "$CMD_I666" ]; then
+        stampa_voce_allineata_help_orange "jdw-ic666" "" "Inferno Core 6.6.6, la Suite Infernale del JÐWØ®LÐ Ø$"
     fi
 
     if [ -f "$CMD_MCPR" ]; then
-        stampa_voce_allineata_help_orange "jdw-mcpro" "" "Lancia il JÐWØ®LÐ Ø$ Media Center Pro"
+        stampa_voce_allineata_help_orange "jdw-mcpro" "" "JÐWØ®LÐ Ø$ Media Center Pro [IC666 MOD.]"
     fi
 
-    if [ -f "$CMD_RADI" ]; then
-        stampa_voce_allineata_help_orange "jdw-radio" "" "Ascolta le radio selezionate per il JÐWØ®LÐ Ø$"
+    if [ -f "$CMD_NETB" ]; then
+        stampa_voce_allineata_help_orange "jdw-netbird" "" "Centro di Controllo della rete Mesh Netbird [IC666 MOD.]"
+    fi
+
+    if [ -f "$CMD_NUKE" ]; then
+        stampa_voce_allineata_help_orange "jdw-nuke" "" "Purificatore di Sistema del JÐWØ®LÐ Ø$ [IC666 MOD.]"
+    fi
+
+    if [ -f "$CMD_WEVD" ]; then
+        stampa_voce_allineata_help_orange "jdw-webdev" "" "Ambiente di Sviluppo Web del JÐWØ®LÐ Ø$ [IC666 MOD.]"
     fi
 
     if [ -f "$CMD_META" ]; then
-        stampa_voce_allineata_help_orange "jdw-metal" "" "Ascolta Musica Metal selezionata per il JÐWØ®LÐ Ø$"
+        stampa_voce_allineata_help_orange "jdw-metal" "" "Musica Metal selezionata per il JÐWØ®LÐ Ø$ [IC666 MOD.]"
     fi
 
+    if [ -f "$CMD_MUSI" ]; then
+        stampa_voce_allineata_help_orange "jdw-music" "" "Musica di viario genere selezionata per il JÐWØ®LÐ Ø$ [IC666 MOD.]"
+    fi
+
+
     if [ -f "$CMD_WPAN" ]; then
-        stampa_voce_allineata_help_orange "jdw-wp-animate" "" "Lancia lo Switch per i Wallpaper Animati in formato WEBP"
+        stampa_voce_allineata_help_orange "jdw-wp-animate" "" "Switch per i Wallpaper Animati in formato WEBP"
     fi
 
     if [ -f "$CMD_WPHO" ]; then
-        stampa_voce_allineata_help_orange "jdw-wp-horror" "" "Lancia lo Switch per i Wallpaper Horror in formato JPG"
+        stampa_voce_allineata_help_orange "jdw-wp-horror" "" "Switch per i Wallpaper Horror in formato JPG"
     fi
 
-    if [ -f "$CMD_I666" ]; then
-        stampa_voce_allineata_help_orange "jdw-ic666" "" "Lancia Inferno Core 6.6.6, la Suite Infernale del JÐWØ®LÐ Ø$"
+    if [ -f "$CMD_MEGR" ]; then
+        stampa_voce_allineata_help_orange "jdw-mc" "" "JÐWØ®LÐ Ø$ Media-Grabber (Boccaporto Edition)"
     fi
+
 
 #    if [ -f "$CMD_" ]; then
 #        stampa_voce_allineata_help_orange "jdw-" "" ""
