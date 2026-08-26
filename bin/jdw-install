@@ -46,6 +46,8 @@ BASE_INPUT=$(basename "$INPUT")
 P_CLEAN_NAME="${BASE_INPUT%.jdw}"
 # Estrattore del nome pulito del pacchetto per la disinstallazione dello stesso
 P_REMOVE_NAME="${P_CLEAN_NAME}-remove.sh"
+# Estrazione del nome del pacchetto per il JDWOS-STM
+P_MENU_PYQT6="${P_CLEAN_NAME}-stn.txt"
 
 # 2. LOGICA IBRIDA: CONTROLLO LOCALE / CLOUD CLUSTER
 if [ -f "$INPUT" ]; then
@@ -97,6 +99,14 @@ if [ -f "$EXTRACT_DIR/install.sh" ]; then
     if [ -f "$EXTRACT_DIR/remove.sh" ]; then
         cp "$EXTRACT_DIR/remove.sh" "/usr/share/jdworldos/jdwos-pkg/uninstall.d/${P_REMOVE_NAME}"
     fi
+
+    # 3. Copia della voce atomica per il menù PyQt6
+    mkdir -p /usr/share/jdworldos/jdwos-stm/menu.d
+    if [ -f "$EXTRACT_DIR/comandi/jdwos-stm.txt" ]; then
+        cp "$EXTRACT_DIR/comandi/jdwos-stm.txt" "/usr/share/jdworldos/jdwos-stm/menu.d/${P_MENU_PYQT6}"
+        chmod 644 "/usr/share/jdworldos/jdwos-stm/menu.d/${P_MENU_PYQT6}"
+    fi
+
 else
     echo -e "  ${redb}[ERRORE] Il pacchetto non è conforme agli standard JDW (Manca install.sh).${reset}"
 fi

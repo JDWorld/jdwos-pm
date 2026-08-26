@@ -45,6 +45,7 @@ stampa_scheda() {
             local val=$(echo "$linea" | cut -d= -f2- | tr -d '"'\')
 
             # Applica i tag con le icone visive a seconda della variabile rilevata
+            rivela_pm
             case "$tag" in
                 pkgname)
                     printf "  ${yellowb}%-23b${reset} %s\n" "📦 PACKAGE NAME:"     "$val" ;;
@@ -52,8 +53,17 @@ stampa_scheda() {
                     printf "  ${yellowb}%-23b${reset} %s\n" "📌 VERSION:"     "$val" ;;
                 pkgdesc)
                     printf "  ${yellowb}%-23b${reset} %s\n" "📖 DESCRIPTION:"  "$val" ;;
+                # --- FILTRO CHIRURGICO DIPENDENZE (IDEATO DA JACK) ---
                 dependencies)
-                    printf "  ${yellowb}%-23b${reset} %s\n" "⚙️ DEPENDENCIES:"  "  $val" ;;
+                    # Se siamo su Debian/Apt, salta in silenzio la riga di Arch!
+                    if [ "$PKGS" = "apt" ]; then continue; fi
+                    printf "  ${yellowb}%-23b${reset} %s\n" "⚙️ DEPENDENCIES:"      "  $val" ;;
+
+                dependenciesdeb)
+                    # Se siamo su Arch/Pacman, salta in silenzio la riga di Debian!
+                    if [ "$PKGS" = "pacman" ]; then continue; fi
+                    printf "  ${yellowb}%-23b${reset} %s\n" "⚙️ DEPENDENCIES:"      "  $val" ;;
+                # -----------------------------------------------------
                 architecture)
                     printf "  ${yellowb}%-23b${reset} %s\n" "🎨 ARCHITECTURE:"      "$val" ;;
                 license)

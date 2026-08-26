@@ -51,6 +51,7 @@ if [ -f "$UNINSTALL_SCRIPT" ]; then
     # FIX MANIFEST BUG: Rimuove dinamicamente il pacchetto dal database di jdw-list
     rm -f "/usr/share/jdworldos/jdwos-pkg/installed/$PACCHETTO"
     rm -f "/usr/share/jdworldos/jdwos-pkg/uninstall.d/$PACCHETTO-remove.sh"
+    rm -f "/usr/share/jdworldos/jdwos-stm/menu.d/$PACCHETTO-stm.txt"
     rm -rf "/usr/share/$PACCHETTO"
 
     echo ""
