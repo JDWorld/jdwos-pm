@@ -16,11 +16,11 @@ rivela_pm
 
 case "$PKGS" in
     pacman)
-         sudo pacman -S --needed --noconfirm kdialog
+         sudo pacman -S --needed --noconfirm kdialog git
         ;;
     apt)
         # Sincronizzazione specchi Debian obbligatoria prima del push
-        sudo apt-get update -y && sudo apt-get install -y kdialog
+        sudo apt-get update -y && sudo apt-get install -y kdialog git
         ;;
     *)
         echo "Distribuzione non supportata"
