@@ -32,7 +32,7 @@ rivela_distro
 
 # --- IL FILTRO DI CONTROLLO PER LA SUITE FASTFETCH CUSTOM ---
 # 1. Definiamo il percorso del file di configurazione master di JDWorld OS
-CONF_FF_HARD="/usr/share/jdworldos/jdwos-stm-ff/fastfetch/jdwos_full.jsonc"
+CONF_FF_HARD="/usr/share/jdworldos/jdwos-stm-ff/kitty/kitty-full.conf"
 # Puoi usare anche il percorso nella home se preferisci: "/home/${SUDO_USER:-$USER}/.config/fastfetch/hardware.jsonc"
 
 # 2. Controllo a doppia mandata: il comando deve esistere E il file deve essere presente
