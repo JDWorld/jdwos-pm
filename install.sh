@@ -7,7 +7,21 @@ source "/usr/share/jdworldos/jdwos-lib/jdwos-icore.sh" 2>/dev/null
 source "/usr/share/jdworldos/jdwos-lib/jdwos-rgb.sh" 2>/dev/null
 
 SRC_DIR=$1
-
+# Supporta: Ubuntu/Debian (apt), Arch (pacman)
+rivela_pm(){
+    if command -v pacman &>/dev/null; then
+        PKGS="pacman"
+        DISTROS="Arch"
+    elif command -v apt &>/dev/null; then
+        PKGS="apt"
+        DISTROS="Debian/Ubuntu"
+    else
+        echo -e "${redb}[☠️] ERRORE: Package Manager non supportato da JÐWØ®LÐ Ø$.${reset}"
+        exit 1
+    fi
+    # Esportazione globale per i processi figli
+    export PKGS DISTROS
+}
 echo "📦 Installazione del JDWorld OS Package Manager Universale..."
 # Blocco rivelamento PM e Installazione Dipendenze (pacman/apt)
 echo -e "${orange}[*] Sincronizzazione delle dipendenze di sistema su base $DISTROS...${reset}"
