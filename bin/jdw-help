@@ -60,7 +60,7 @@ fi
     CMD_NETB="/usr/bin/jdw-netbird"
     CMD_NUKE="/usr/bin/jdw-nuke"
 
-    if [ -f "$CMD_MEGR" ] || [ -f "$CMD_NETB" ] || [ -f "$CMD_NUKE" ] || [ -f "$CMD_MCPR" ] || [ -f "$CMD_WPHO" ] || [ -f "$CMD_WPAN" ] || [ -f "$CMD_WEBD" ] || [ -f "$CMD_MUSI" ] || [ -f "$CMD_I666" ]; then
+    if [ -f "$CMD_MEGR" ] || [ -f "$CMD_NETB" ] || [ -f "$CMD_NUKE" ] || [ -f "$CMD_MCPR" ] || [ -f "$CMD_WPHO" ] || [ -f "$CMD_WPAN" ] || [ -f "$CMD_WEBD" ] || [ -f "$CMD_MUSI" ] || [ -f "$CMD_META" ] || [ -f "$CMD_I666" ]; then
         echo -e "  $(print_grg "[ JÐWØ®LÐ Ø$: TERMINAL USER INTERFACE ]")"
     fi
 
