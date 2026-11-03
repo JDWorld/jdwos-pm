@@ -107,6 +107,11 @@ if [ -f "$EXTRACT_DIR/install.sh" ]; then
         chmod 644 "/usr/share/jdworldos/jdwos-stm/menu.d/${P_MENU_PYQT6}"
     fi
 
+    # 3. Copia le icone in pixmaps per l'ambiente grafico
+    if [ -d "$SRC_DIR/icone" ] && [ "$(ls -A "$SRC_DIR/icone")" ]; then
+        sudo cp "$SRC_DIR/icone/"* /usr/share/pixmaps/
+    fi
+
 else
     echo -e "  ${redb}[ERRORE] Il pacchetto non è conforme agli standard JDW (Manca install.sh).${reset}"
 fi
