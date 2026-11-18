@@ -1,5 +1,5 @@
 pkgname=jdwos-pm
-pkgver=1.3.0
+pkgver=1.3.1
 pkgdesc=JDWorld OS Package Manager Universale
 dependencies=kdialog jdwos-corelib
 dependenciesdeb=kdialog jdwos-corelib
@@ -9,4 +9,4 @@ maintainer=JDWorld
 package_size=448K
 installed_size=448K
 build_date=19-06-2026
-update_date=03-11-2026
+update_date=19-11-2026

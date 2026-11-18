@@ -73,5 +73,37 @@ fi
 
 sudo jdw-install jdwos-corelib
 
-echo "✔️  JDWorld OS: Gestore dei Pacchetti JDW installato e pronto all'azione!"
-cd ..
+# ==========================================================================
+# 🛸 BIVIO FINALE POST-INSTALLAZIONE PM
+# ==========================================================================
+
+echo ""
+echo "=================================================================="
+echo " ✅ JÐWØ®LÐ ØS Package Manager installato con successo!"
+echo "=================================================================="
+
+# Controlla se è attiva una sessione grafica (X11 o Wayland) per usare kdialog
+if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+    kdialog --title "JÐWØ®LÐ ØS Setup" \
+            --yesno "Il Package Manager è pronto.\n\nVuoi trasformare subito questo sistema in JÐWØ®LÐ ØS (Junior Edition) installando tutti i pacchetti base, Chaotic-AUR ed il System Tray Menù?" \
+            --yes-label "Sì, installa JÐWØ®LÐ ØS Junior Edition" \
+            --no-label "No, resta solo con il Package Manager (.JDW)"
+    SCELTA=$?
+else
+    # Fallback da terminale puro (se lanciato prima di avviare il DE)
+    read -p "⚡ Vuoi installare subito JÐWØ®LÐ ØS META-PKG Junior? [s/N]: " RISPOSTA
+    if [[ "$RISPOSTA" =~ ^[Ss]$ ]]; then
+        SCELTA=0
+    else
+        SCELTA=1
+    fi
+fi
+
+# Esecuzione in base alla risposta
+if [ "$SCELTA" -eq 0 ]; then
+    echo "🚀 Avvio installazione JÐWØ®LÐ ØS META-PKG Junior..."
+    sudo jdw-install jdwos-meta-junior
+else
+    echo "👍 Perfetto! Puoi installare i singoli pacchetti quando vuoi con: sudo jdw-install nome-pacchetto"
+fi
+

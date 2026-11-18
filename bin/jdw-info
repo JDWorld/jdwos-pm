@@ -16,7 +16,7 @@ LOCAL_DB="/usr/share/jdworldos/jdwos-pkg/installed"
 TMP_META="/tmp/${PACK_NAME}-cloud.info"
 
 # Unico URL Cloud Centralizzato (Specchio pulito dei metadati senza .info)
-URL_PAGES="https://JDWorld.github.io/jdworldos/metadata/${PACK_NAME}"
+URL_PAGES="https://github.com/JDWorld/jdworldos/tree/main/content/metadata/${PACK_NAME}"
 
 # --- LA FUNZIONE INTERNA GRAFICA AGGIORNATA IN INFERNO STYLE ---
 stampa_scheda() {
