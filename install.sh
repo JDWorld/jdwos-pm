@@ -71,13 +71,42 @@ if [ -f "$SRC_DIR/remove.sh" ]; then
     sudo chmod +x "/usr/share/jdworldos/jdwos-pkg/uninstall.d/jdwos-pm-remove.sh"
 fi
 
+sudo jdw-install jdwos-corelib
 # ==========================================================================
 # 🛸 BIVIO FINALE POST-INSTALLAZIONE PM
 # ==========================================================================
-
 echo ""
 echo "=================================================================="
 echo " ✅ JÐWØ®LÐ ØS Package Manager installato con successo!"
 echo "=================================================================="
 
-ohup bash -c "sleep 1 && sudo jdw-install jdwos-corelib && sudo jdw-install jdwos-meta-pkg" >/dev/null 2>&1 &
+# Configurazione: inserisci qui user/repo e il nome esatto dell'asset
+GITHUB_REPO="JDWorld/jdwos-repo"
+ASSET_NAME="jdwos-meta-pkg"
+
+
+echo "Scaricamento di $ASSET_NAME da https://github.com/$GITHUB_REPO..."
+
+# 1. Scarica l'asset dalla release più recente usando GitHub API
+curl -L -o "$ASSET_NAME" "https://github.com/$GITHUB_REPO/releases/latest/download/$ASSET_NAME.jdw"
+
+if [ ! -f "$ASSET_NAME" ]; then
+    echo "Errore: file non trovato o errore di download."
+    exit 1
+fi
+
+# 2. Installa il pacchetto locale con pacman
+echo "Installazione del pacchetto..."
+sudo jdw-install "$ASSET_NAME"
+
+# 3. Pulizia: rimuove il file scaricato dopo l'installazione
+echo "Pulizia del file scaricato..."
+rm -f "$ASSET_NAME"
+
+
+# 5. Copia le icone in pixmaps per l'ambiente grafico
+if [ -d "$SRC_DIR/icone" ] && [ "$(ls -A "$SRC_DIR/icone")" ]; then
+    sudo cp "$SRC_DIR/icone/"* /usr/share/pixmaps/
+fi
+
+echo "✔️  JDWorld OS: Seleziona Edizione"

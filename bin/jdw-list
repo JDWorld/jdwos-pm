@@ -18,16 +18,13 @@ fi
 
 # 1. STATO_HEADER COORDINATO (Stile Orange Scuro del Package Manager)
 print_jdw_bar "$red"
-titolo_lista=$(print_rgr "⚡ INFRASTRUTTURA: DATABASE MODULI ATTIVI DI SISTEMA ⚡")
+titolo_lista=$(print_rgr "☠️ JÐWØ®LÐ ØS: LISTA PACCHETTI PRESENTI A BORDO ☠️")
 centra_testo "$titolo_lista"
 print_jdw_bar "$red"
-
-    # Iniezione della frase random sotto l'header
-    jdw_header_dinamico
-    echo ""
+#echo ""
 
 # Intestazione della tabella formattata millimetricamente
-printf " ${yellowb}%-22s${reset} ${dim}|${reset} ${yellowb}%-12s${reset} ${dim}|${reset} ${yellowb}%s${reset}\n" " NOME PACCHETTO " "DATA BUILD" "DESCRIZIONE COMPLETA"
+printf " ${yellowb}%-22s${reset} ${dim}|${reset} ${yellowb}%-12s${reset} ${dim}|${reset} ${yellowb}%-12s${reset} ${dim}|${reset} ${yellowb}%-12s${reset} ${dim}|${reset} ${yellowb}%s${reset}\n" " NOME PACCHETTO " "DATA BUILD" "DATA UPDATE" "VERSIONE" "BREVE DESCRIZIONE"
 print_jdw_bar "$red"
 
 # 2. MOTORE DI SCANSIONE LOCALE
@@ -38,6 +35,8 @@ for file in "$DB_LOCAL"/*; do
     p_name=""
     p_date=""
     p_desc=""
+    p_updt=""
+    p_vers=""
 
     # Legge il file riga per riga ed estrae i metadati strutturati
     # TRUCCO: Pialliamo al volo gli apici singoli e doppi del PKGBUILD con tr
@@ -46,6 +45,8 @@ for file in "$DB_LOCAL"/*; do
         case "$chiave" in
             pkgname)     p_name=" $valore_pulito" ;;
             build_date)  p_date=" $valore_pulito" ;;
+            update_date) p_updt=" $valore_pulito" ;;
+            pkgver)      p_vers=" $valore_pulito" ;;
             description|pkgdesc) p_desc=" $valore_pulito" ;;
         esac
     done < "$file"
@@ -53,17 +54,22 @@ for file in "$DB_LOCAL"/*; do
     # Se il file non aveva le chiavi standard, usa il nome del file come fallback
     [ -z "$p_name" ] && p_name=" $(basename "$file")"
     [ -z "$p_date" ] && p_date=" N/D"
+    [ -z "$p_updt" ] && p_updt=" N/D"
+    [ -z "$p_vers" ] && p_vers=" N/D"
     [ -z "$p_desc" ] && p_desc=" Nessuna descrizione presente nel manifest."
 
     # Tronca la descrizione a 48 caratteri se è troppo chilometrica per non sballare Kitty
-    if [ ${#p_desc} -gt 48 ]; then
-        p_desc="${p_desc:0:45}..."
+    if [ ${#p_desc} -gt 33 ]; then
+        p_desc="${p_desc:0:30}..."
     fi
 
     # 3. STAMPA DELLA RIGA FORMATTATA CON SEPARATORI CROMATICI
-    printf " ${white}%-22s${reset} ${dim}|${reset} ${orange}%-12s${reset} ${dim}|${reset} ${dim}%s${reset}\n" "$p_name" "$p_date" "$p_desc"
+    printf " ${white}%-22s${reset} ${dim}|${reset} ${orange}%-12s${reset} ${dim}|${reset} ${yellowb}%-12s${reset} ${dim}|${reset} ${yellowb}%-12s${reset} ${dim}|${reset} ${dim}%s${reset}\n" "$p_name" "$p_date" "$p_updt" "$p_vers" "$p_desc"
 done
 
 # 4. STATO_FOOTER DI CHIUSURA BOX
+print_jdw_bar "$red"
+# Iniezione della frase random sotto l'header
+jdw_header_dinamico
 print_jdw_bar "$red"
 echo ""
